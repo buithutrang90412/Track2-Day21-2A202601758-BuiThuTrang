@@ -6,12 +6,13 @@ import json
 import joblib
 import os
 from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.metrics import accuracy_score, f1_score
+from sklearn.metrics import accuracy_score, confusion_matrix, f1_score, precision_score, recall_score
 
 # Nguong chat luong cua lab nay la f1_score, KHONG phai accuracy.
 # Ly do: bo du lieu Adult co ty le lop 75/25. Mot mo hinh doan bua
 # "thu nhap thap" cho moi mau da dat accuracy 0.75 ma khong hoc duoc gi.
 F1_THRESHOLD = 0.65
+REFERENCE_POSITIVE_RATE = 0.248
 
 
 def train(
@@ -53,23 +54,57 @@ def train(
 
         # TODO 5: Du doan tren tap holdout va tinh chi so
         # Chu y: f1_score o day tinh cho LOP DUONG (target = 1), khong dung average.
-        preds = model.predict(X_eval)
+        probabilities = model.predict_proba(X_eval)[:, 1]
+        thresholds = [round(i / 100, 2) for i in range(10, 91, 5)]
+        threshold_scores = {
+            threshold: f1_score(y_eval, (probabilities >= threshold).astype(int))
+            for threshold in thresholds
+        }
+        best_threshold = max(threshold_scores, key=threshold_scores.get)
+        default_preds = (probabilities >= 0.5).astype(int)
+        preds = (probabilities >= best_threshold).astype(int)
+        default_f1 = f1_score(y_eval, default_preds)
         f1 = f1_score(y_eval, preds)
         acc = accuracy_score(y_eval, preds)
+        precision = precision_score(y_eval, preds, zero_division=0)
+        recall = recall_score(y_eval, preds, zero_division=0)
+        matrix = confusion_matrix(y_eval, preds)
+        positive_rate = float(y_train.mean())
+        drift = abs(positive_rate - REFERENCE_POSITIVE_RATE) > 0.05
 
         # TODO 6: Ghi nhan chi so vao MLflow
         mlflow.log_metric("f1_score", f1)
         mlflow.log_metric("accuracy", acc)
+        mlflow.log_metric("default_f1_score", default_f1)
+        mlflow.log_metric("best_threshold", best_threshold)
+        mlflow.log_metric("train_positive_rate", positive_rate)
         mlflow.sklearn.log_model(model, "model")
 
         # TODO 7: In ket qua ra man hinh
-        print(f"F1: {f1:.4f} | Accuracy: {acc:.4f}")
+        print(f"F1: {f1:.4f} | Accuracy: {acc:.4f} | threshold: {best_threshold:.2f}")
+        if drift:
+            print(f"WARNING: train positive rate {positive_rate:.3f} differs from reference {REFERENCE_POSITIVE_RATE:.3f}")
 
         # TODO 8: Luu metrics ra file outputs/report.json
         # File nay duoc doc boi GitHub Actions o Buoc 2
         os.makedirs("outputs", exist_ok=True)
         with open("outputs/report.json", "w") as f:
-            json.dump({"f1_score": f1, "accuracy": acc}, f)
+            json.dump({
+                "f1_score": f1,
+                "accuracy": acc,
+                "default_f1_score": default_f1,
+                "best_threshold": best_threshold,
+                "train_positive_rate": positive_rate,
+                "drift_warning": drift,
+            }, f)
+        with open("outputs/detail.txt", "w") as f:
+            f.write("Confusion matrix (rows=true, columns=predicted):\n")
+            f.write(f"{matrix.tolist()}\n\n")
+            f.write(f"threshold={best_threshold:.2f}\n")
+            f.write(f"class_0_precision={precision_score(y_eval, preds, pos_label=0, zero_division=0):.4f}\n")
+            f.write(f"class_0_recall={recall_score(y_eval, preds, pos_label=0, zero_division=0):.4f}\n")
+            f.write(f"class_1_precision={precision:.4f}\n")
+            f.write(f"class_1_recall={recall:.4f}\n")
 
         # TODO 9: Luu mo hinh ra file models/model.joblib
         # File nay duoc upload len cloud storage o Buoc 2

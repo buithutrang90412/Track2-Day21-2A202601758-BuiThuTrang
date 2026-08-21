@@ -105,8 +105,8 @@ thêm thông tin mới" được đánh giá cao hơn kết luận sai rằng th
 
 <!-- Xóa cả mục 5 nếu không làm bonus. Mỗi bonus tối đa 1 dòng. -->
 
-- [ ] Bonus 1 - Tracking MLflow từ xa với DagsHub: ___
-- [ ] Bonus 2 - Điều chỉnh ngưỡng quyết định: ___
-- [ ] Bonus 3 - Báo cáo precision / recall tự động: ___
-- [ ] Bonus 4 - Hoàn trả về phiên bản trước: ___
-- [ ] Bonus 5 - Cảnh báo lệch lạc dữ liệu: ___
+- [ ] Bonus 1 - Tracking MLflow từ xa với DagsHub: Chưa thực hiện vì cần cấu hình tài khoản DagsHub.
+- [x] Bonus 2 - Điều chỉnh ngưỡng quyết định: Quét ngưỡng 0.10–0.90, chọn ngưỡng có F1 cao nhất và ghi vào report/MLflow.
+- [x] Bonus 3 - Báo cáo precision / recall tự động: Tạo confusion matrix cùng precision/recall từng lớp trong `outputs/detail.txt` và upload làm artifact.
+- [x] Bonus 4 - Hoàn trả về phiên bản trước: So sánh F1 model mới với report trên S3 và dừng release nếu F1 giảm.
+- [x] Bonus 5 - Cảnh báo lệch lạc dữ liệu: So sánh tỷ lệ target dương với mức tham chiếu 24,8% và ghi cảnh báo vào report.
