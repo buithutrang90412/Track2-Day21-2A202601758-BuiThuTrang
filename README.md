@@ -77,37 +77,37 @@ Bộ dữ liệu gốc gồm 48.842 mẫu. Sau khi loại bỏ các dòng thiế
 
 Đặc trưng đầu vào (10 cột, đều là số sau khi `prepare_data.py` mã hóa sẵn):
 
-| Tên cột | Mô tả | Miền giá trị |
-|---|---|---|
-| age | Tuổi | 17 - 90 |
-| workclass | Nhóm nghề nghiệp (đã mã hóa) | 0 - 6 |
-| education_num | Số năm học quy đổi | 1 - 16 |
-| marital_status | Tình trạng hôn nhân (đã mã hóa) | 0 - 6 |
-| occupation | Ngành nghề (đã mã hóa) | 0 - 13 |
-| relationship | Vai trò trong hộ gia đình (đã mã hóa) | 0 - 5 |
-| sex | Giới tính | 0 = Nữ, 1 = Nam |
-| capital_gain | Thu nhập từ vốn | 0 - 99999 |
-| capital_loss | Lỗ từ vốn | 0 - 4356 |
-| hours_per_week | Số giờ làm việc mỗi tuần | 1 - 99 |
+| Tên cột      | Mô tả                                       | Miền giá trị  |
+| -------------- | --------------------------------------------- | ---------------- |
+| age            | Tuổi                                         | 17 - 90          |
+| workclass      | Nhóm nghề nghiệp (đã mã hóa)           | 0 - 6            |
+| education_num  | Số năm học quy đổi                       | 1 - 16           |
+| marital_status | Tình trạng hôn nhân (đã mã hóa)       | 0 - 6            |
+| occupation     | Ngành nghề (đã mã hóa)                  | 0 - 13           |
+| relationship   | Vai trò trong hộ gia đình (đã mã hóa) | 0 - 5            |
+| sex            | Giới tính                                   | 0 = Nữ, 1 = Nam |
+| capital_gain   | Thu nhập từ vốn                            | 0 - 99999        |
+| capital_loss   | Lỗ từ vốn                                  | 0 - 4356         |
+| hours_per_week | Số giờ làm việc mỗi tuần                | 1 - 99           |
 
 Nhãn dự đoán (cột `target`):
 
-| Giá trị | Ý nghĩa | Nhãn trả về bởi API |
-|---|---|---|
-| 0 | Thu nhập <= 50K USD/năm | `thu_nhap_thap` |
-| 1 | Thu nhập > 50K USD/năm | `thu_nhap_cao` |
+| Giá trị | Ý nghĩa                 | Nhãn trả về bởi API |
+| --------- | ------------------------- | ----------------------- |
+| 0         | Thu nhập <= 50K USD/năm | `thu_nhap_thap`       |
+| 1         | Thu nhập > 50K USD/năm  | `thu_nhap_cao`        |
 
 ### Bảng giải mã các cột phân loại
 
 `prepare_data.py` mã hóa các cột dạng chuỗi thành số nguyên **theo thứ tự bảng chữ cái**. Bạn không cần tự mã hóa, nhưng cần bảng này để đọc hiểu dữ liệu và tự tạo payload thử nghiệm:
 
-| Cột | Mã |
-|---|---|
-| workclass | 0=Federal-gov, 1=Local-gov, 2=Private, 3=Self-emp-inc, 4=Self-emp-not-inc, 5=State-gov, 6=Without-pay |
-| marital_status | 0=Divorced, 1=Married-AF-spouse, 2=Married-civ-spouse, 3=Married-spouse-absent, 4=Never-married, 5=Separated, 6=Widowed |
-| occupation | 0=Adm-clerical, 1=Armed-Forces, 2=Craft-repair, 3=Exec-managerial, 4=Farming-fishing, 5=Handlers-cleaners, 6=Machine-op-inspct, 7=Other-service, 8=Priv-house-serv, 9=Prof-specialty, 10=Protective-serv, 11=Sales, 12=Tech-support, 13=Transport-moving |
-| relationship | 0=Husband, 1=Not-in-family, 2=Other-relative, 3=Own-child, 4=Unmarried, 5=Wife |
-| sex | 0=Female, 1=Male |
+| Cột           | Mã                                                                                                                                                                                                                                                      |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| workclass      | 0=Federal-gov, 1=Local-gov, 2=Private, 3=Self-emp-inc, 4=Self-emp-not-inc, 5=State-gov, 6=Without-pay                                                                                                                                                    |
+| marital_status | 0=Divorced, 1=Married-AF-spouse, 2=Married-civ-spouse, 3=Married-spouse-absent, 4=Never-married, 5=Separated, 6=Widowed                                                                                                                                  |
+| occupation     | 0=Adm-clerical, 1=Armed-Forces, 2=Craft-repair, 3=Exec-managerial, 4=Farming-fishing, 5=Handlers-cleaners, 6=Machine-op-inspct, 7=Other-service, 8=Priv-house-serv, 9=Prof-specialty, 10=Protective-serv, 11=Sales, 12=Tech-support, 13=Transport-moving |
+| relationship   | 0=Husband, 1=Not-in-family, 2=Other-relative, 3=Own-child, 4=Unmarried, 5=Wife                                                                                                                                                                           |
+| sex            | 0=Female, 1=Male                                                                                                                                                                                                                                         |
 
 ### Vì sao lab này dùng F1 thay vì Accuracy
 
@@ -117,11 +117,11 @@ Vì vậy ngưỡng chất lượng của lab này đặt trên `f1_score` của
 
 ### Phân chia dữ liệu
 
-| File | Số mẫu | Mục đích |
-|---|---|---|
-| data/train_batch1.csv | 22.361 | Huấn luyện ở Bước 1 và 2 |
-| data/holdout.csv | 500 | Đánh giá mô hình (không bao giờ dùng để huấn luyện) |
-| data/train_batch2.csv | 22.361 | Dữ liệu mới bổ sung ở Bước 3 |
+| File                  | Số mẫu | Mục đích                                                     |
+| --------------------- | -------- | --------------------------------------------------------------- |
+| data/train_batch1.csv | 22.361   | Huấn luyện ở Bước 1 và 2                                  |
+| data/holdout.csv      | 500      | Đánh giá mô hình (không bao giờ dùng để huấn luyện) |
+| data/train_batch2.csv | 22.361   | Dữ liệu mới bổ sung ở Bước 3                             |
 
 Chạy script sau một lần duy nhất để tải và chia dữ liệu:
 
@@ -233,11 +233,11 @@ pyyaml==6.0.1
 
 ## Hướng Dẫn Lab
 
-| Bước | Nội dung | File hướng dẫn |
-|---|---|---|
-| 1 | Thực nghiệm cục bộ và theo dõi bằng MLflow | tasks/buoc-1.md |
-| 2 | Pipeline CI/CD tự động với GitHub Actions và DVC | tasks/buoc-2.md |
-| 3 | Huấn luyện liên tục khi có dữ liệu mới | tasks/buoc-3.md |
+| Bước | Nội dung                                             | File hướng dẫn |
+| ------ | ----------------------------------------------------- | ----------------- |
+| 1      | Thực nghiệm cục bộ và theo dõi bằng MLflow     | tasks/buoc-1.md   |
+| 2      | Pipeline CI/CD tự động với GitHub Actions và DVC | tasks/buoc-2.md   |
+| 3      | Huấn luyện liên tục khi có dữ liệu mới        | tasks/buoc-3.md   |
 
 Bắt đầu từ [Bước 1](tasks/buoc-1.md).
 
@@ -247,26 +247,26 @@ Bắt đầu từ [Bước 1](tasks/buoc-1.md).
 
 ### Tiêu chí chính (80 điểm)
 
-| Hạng mục | Tiêu chí đánh giá | Điểm tối đa |
-|---|---|---|
-| Bước 1 - MLflow tracking | MLflow UI hiển thị ít nhất 3 lần chạy với các siêu tham số khác nhau | 12 |
-| Bước 1 - Độ đo | Mỗi lần chạy ghi nhận đủ cả `f1_score` và `accuracy` | 8 |
-| Bước 1 - Phân tích | Xác định bộ siêu tham số tốt nhất và giải thích vì sao dùng F1 thay vì accuracy | 4 |
-| Bước 2 - DVC | Remote đã cấu hình, `dvc push` thành công, dữ liệu hiển thị trên cloud storage | 12 |
-| Bước 2 - CI/CD | Cả bốn GitHub Actions jobs (Unit Test, Train, Quality Gate, Release) đều qua (màu xanh) | 16 |
-| Bước 2 - Quality gate | Release job tự động bị chặn khi f1_score dưới ngưỡng 0.65 | 4 |
-| Bước 2 - Serving | VM trả về kết quả đúng tại endpoint POST /score | 12 |
-| Bước 3 - Tự động hóa | Một commit dữ liệu mới kích hoạt toàn bộ pipeline không cần tác động thủ công | 12 |
-| Tổng | | 80 |
+| Hạng mục                 | Tiêu chí đánh giá                                                                        | Điểm tối đa |
+| -------------------------- | --------------------------------------------------------------------------------------------- | --------------- |
+| Bước 1 - MLflow tracking | MLflow UI hiển thị ít nhất 3 lần chạy với các siêu tham số khác nhau               | 12              |
+| Bước 1 - Độ đo        | Mỗi lần chạy ghi nhận đủ cả`f1_score` và `accuracy`                               | 8               |
+| Bước 1 - Phân tích     | Xác định bộ siêu tham số tốt nhất và giải thích vì sao dùng F1 thay vì accuracy | 4               |
+| Bước 2 - DVC             | Remote đã cấu hình,`dvc push` thành công, dữ liệu hiển thị trên cloud storage    | 12              |
+| Bước 2 - CI/CD           | Cả bốn GitHub Actions jobs (Unit Test, Train, Quality Gate, Release) đều qua (màu xanh)  | 16              |
+| Bước 2 - Quality gate    | Release job tự động bị chặn khi f1_score dưới ngưỡng 0.65                            | 4               |
+| Bước 2 - Serving         | VM trả về kết quả đúng tại endpoint POST /score                                        | 12              |
+| Bước 3 - Tự động hóa | Một commit dữ liệu mới kích hoạt toàn bộ pipeline không cần tác động thủ công  | 12              |
+| Tổng                      |                                                                                               | 80              |
 
 ### Thang điểm chi tiết
 
-| Khoảng điểm | Nhận xét |
-|---|---|
-| 90 - 100 | Xuất sắc. Toàn bộ pipeline hoạt động chính xác, đầy đủ bằng chứng và có điểm bonus. |
-| 72 - 89 | Tốt. Hoàn thành toàn bộ tiêu chí chính, có thể còn thiếu một phần bằng chứng. |
-| 56 - 71 | Đạt yêu cầu tối thiểu. Hoàn thành được các bước chính nhưng còn lỗi hoặc thiếu bước. |
-| Dưới 56 | Chưa đạt. Nhiều phần chưa được thực hiện hoặc không hoạt động. |
+| Khoảng điểm | Nhận xét                                                                                                 |
+| -------------- | ---------------------------------------------------------------------------------------------------------- |
+| 90 - 100       | Xuất sắc. Toàn bộ pipeline hoạt động chính xác, đầy đủ bằng chứng và có điểm bonus.     |
+| 72 - 89        | Tốt. Hoàn thành toàn bộ tiêu chí chính, có thể còn thiếu một phần bằng chứng.              |
+| 56 - 71        | Đạt yêu cầu tối thiểu. Hoàn thành được các bước chính nhưng còn lỗi hoặc thiếu bước. |
+| Dưới 56      | Chưa đạt. Nhiều phần chưa được thực hiện hoặc không hoạt động.                             |
 
 ### Hướng dẫn nộp bài
 
@@ -282,13 +282,13 @@ không nộp rời.
 đúng tên file dưới đây (yêu cầu chi tiết của từng ảnh xem tại
 [nop-bai/anh-chup-man-hinh/README.md](nop-bai/anh-chup-man-hinh/README.md)):
 
-| Thứ tự | Tên file | Nội dung |
-|---|---|---|
-| 1 | `01-mlflow-ui.png` | MLflow UI hiển thị ít nhất 3 thí nghiệm, thấy rõ cả `f1_score` và `accuracy` |
-| 2 | `02-actions-buoc-2.png` | GitHub Actions tab hiển thị cả bốn jobs màu xanh (Bước 2) |
-| 3 | `03-actions-buoc-3.png` | GitHub Actions của lần chạy do commit dữ liệu kích hoạt (Bước 3) |
-| 4 | `04-curl-api.png` | Kết quả `curl http://VM_IP:8080/healthz` và `curl http://VM_IP:8080/score` |
-| 5 | `05-cloud-storage.png` | Cloud Storage Console hiển thị dữ liệu `dvc/` và model đã upload |
+| Thứ tự | Tên file                 | Nội dung                                                                                 |
+| -------- | ------------------------- | ----------------------------------------------------------------------------------------- |
+| 1        | `01-mlflow-ui.png`      | MLflow UI hiển thị ít nhất 3 thí nghiệm, thấy rõ cả`f1_score` và `accuracy` |
+| 2        | `02-actions-buoc-2.png` | GitHub Actions tab hiển thị cả bốn jobs màu xanh (Bước 2)                          |
+| 3        | `03-actions-buoc-3.png` | GitHub Actions của lần chạy do commit dữ liệu kích hoạt (Bước 3)                 |
+| 4        | `04-curl-api.png`       | Kết quả`curl http://VM_IP:8080/healthz` và `curl http://VM_IP:8080/score`          |
+| 5        | `05-cloud-storage.png`  | Cloud Storage Console hiển thị dữ liệu`dvc/` và model đã upload                  |
 
 **3. File báo cáo ngắn** (không quá 1 trang A4) — điền vào template
 [nop-bai/bao-cao.md](nop-bai/bao-cao.md), gồm:

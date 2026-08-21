@@ -1,6 +1,6 @@
 mlflow.db
 mlartifacts/
-models/
+mlruns/                                     
 outputs/
 data/train_batch1.csv
 data/holdout.csv

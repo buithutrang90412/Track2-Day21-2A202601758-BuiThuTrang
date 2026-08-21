@@ -11,13 +11,13 @@ HƯỚNG DẪN - đọc rồi XÓA TOÀN BỘ các khối chú thích này sau k
     và xem trước bản in bằng cách mở file trên GitHub rồi Ctrl+P / Cmd+P.
 -->
 
-| | |
-|---|---|
-| Họ và tên | ___ |
-| MSSV | ___ |
-| Lớp / Khóa | K4 |
-| Repo GitHub | https://github.com/___/___ |
-| Ngày nộp | ___ |
+|              |                                                                                                                                                     |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Họ và tên | Bùi Thu Trang                                                                                                                                      |
+| MSSV         | 2A202601758                                                                                                                                         |
+| Lớp / Khóa | K4                                                                                                                                                  |
+| Repo GitHub  | [github.com/buithutrang90412/Track2-Day21-2A202601758-BuiThuTrang.git](https://github.com/buithutrang90412/Track2-Day21-2A202601758-BuiThuTrang.git) |
+| Ngày nộp   | 21/08/2026                                                                                                                                          |
 
 ---
 
@@ -25,15 +25,26 @@ HƯỚNG DẪN - đọc rồi XÓA TOÀN BỘ các khối chú thích này sau k
 
 <!-- Khoảng 120 - 150 từ. Điền kết quả thật từ MLflow UI ở Bước 1, tối thiểu 3 lần chạy. -->
 
-| Lần chạy | n_estimators | learning_rate | max_depth | f1_score | accuracy |
-|---|---|---|---|---|---|
-| 1 | ___ | ___ | ___ | ___ | ___ |
-| 2 | ___ | ___ | ___ | ___ | ___ |
-| 3 | ___ | ___ | ___ | ___ | ___ |
+| Lần chạy | n_estimators | learning_rate | max_depth | f1_score    | accuracy |
+| ---------- | ------------ | ------------- | --------- | ----------- | -------- |
+| 1          | 1000         | 0.001         | 5         | 0.625641025 | 0.854    |
+| 2          | 800          | 0.01          | 5         | 0.719626168 | 0.880    |
+| 3          | 600          | 0.01          | 5         | 0.725581395 | 0.882    |
+| 4          | 600          | 0.03          | 5         | 0.703196347 | 0.870    |
+| 5          | 600          | 0.05          | 5         | 0.705882352 | 0.870    |
+| 6          | 500          | 0.05          | 5         | 0.711711711 | 0.872    |
+| 7          | 400          | 0.05          | 5         | 0.714932126 | 0.874    |
+| 8          | 300          | 0.05          | 5         | 0.706422018 | 0.872    |
+| 9          | 300          | 0.05          | 2         | 0.692307692 | 0.872    |
+| 10         | 200          | 0.05          | 5         | 0.703703703 | 0.872    |
+| 11         | 200          | 0.01          | 5         | 0.669950738 | 0.866    |
+| 12         | 200          | 0.1           | 5         | 0.714932126 | 0.874    |
+| 13         | 50           | 0.05          | 2         | 0.605128205 | 0.846    |
+| 14         | 100          | 0.1           | 3         | 0.710900473 | 0.878    |
 
-**Bộ siêu tham số đã chọn:** `n_estimators=___`, `learning_rate=___`, `max_depth=___`.
+**Bộ siêu tham số đã chọn:** `n_estimators=600`, `learning_rate=0.01`, `max_depth=5`.
 
-**Lý do:** ___
+**Lý do:** Bộ `n_estimators=600`, `learning_rate=0.01`, `max_depth=5` được chọn vì đạt F1 cao nhất trong các lần chạy được thể hiện trên MLflow (0.7256), đồng thời vượt ngưỡng chất lượng 0.65. Lần chạy này cũng có accuracy cao nhất trong ba lần được ghi lại. Kết quả cho thấy khi giảm learning rate, cần tăng n_estimators lên giá trị phù hợp để mô hình có đủ vòng boosting và đạt hiệu quả tốt hơn; nếu giảm learning rate mà không tăng n_estimatiors phù hợp thì f1 vẫn sẽ giảm; tuy nhiên accuracy không phản ánh đầy đủ khả năng nhận diện lớp thu nhập cao như F1.
 
 <!--
 Trả lời trong phần Lý do:
@@ -47,9 +58,9 @@ Trả lời trong phần Lý do:
 
 ## 2. Vì Sao Ngưỡng Chất Lượng Đặt Trên F1 Chứ Không Phải Accuracy
 
-<!-- Khoảng 120 - 150 từ. -->
+> Vì ban đầu dữ liệu tập dữ liệu bị mất cân bằng mạnh, chỉ **24,8%** số mẫu thuộc lớp thu nhập cao. Luôn trả lời "thu nhập thấp" cho mọi đầu vào, vẫn đạt accuracy 0.752 thì không có ý nghĩa gì. Vậy nên ta cần ưu tiên f1_score để cân bằng giữa recall và pression cho bài toán này.
 
-___
+<!-- Khoảng 120 - 150 từ. -->
 
 <!--
 Cần nêu được:
@@ -60,17 +71,15 @@ Cần nêu được:
   - Vì sao KHÔNG dùng average="weighted" hay average="macro" khi gọi f1_score.
 -->
 
----
-
 ## 3. Khó Khăn Gặp Phải và Cách Giải Quyết
 
 <!-- Nêu 2 - 3 khó khăn thật, mỗi ô một câu ngắn. -->
 
 | Khó khăn | Nguyên nhân | Cách giải quyết |
-|---|---|---|
-| ___ | ___ | ___ |
-| ___ | ___ | ___ |
-| ___ | ___ | ___ |
+| ---------- | ------------- | ------------------ |
+| ___        | ___           | ___                |
+| ___        | ___           | ___                |
+| ___        | ___           | ___                |
 
 ---
 
@@ -78,10 +87,10 @@ Cần nêu được:
 
 <!-- Lấy số liệu từ bảng ở mục 3.6 của tasks/buoc-3.md. -->
 
-| | f1_score | accuracy |
-|---|---|---|
-| Bước 2 (chỉ `train_batch1`) | ___ | ___ |
-| Bước 3 (thêm `train_batch2`) | ___ | ___ |
+|                                  | f1_score | accuracy |
+| -------------------------------- | -------- | -------- |
+| Bước 2 (chỉ`train_batch1`)  | ___      | ___      |
+| Bước 3 (thêm`train_batch2`) | ___      | ___      |
 
 **Nhận xét:** ___
 
