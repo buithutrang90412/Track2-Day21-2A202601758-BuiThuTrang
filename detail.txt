@@ -1,0 +1,8 @@
+Confusion matrix (rows=true, columns=predicted):
+[[357, 19], [39, 85]]
+
+threshold=0.45
+class_0_precision=0.9015
+class_0_recall=0.9495
+class_1_precision=0.8173
+class_1_recall=0.6855
