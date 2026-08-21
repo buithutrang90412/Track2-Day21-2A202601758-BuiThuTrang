@@ -58,7 +58,7 @@ Trả lời trong phần Lý do:
 
 ## 2. Vì Sao Ngưỡng Chất Lượng Đặt Trên F1 Chứ Không Phải Accuracy
 
-> Vì ban đầu dữ liệu tập dữ liệu bị mất cân bằng mạnh, chỉ **24,8%** số mẫu thuộc lớp thu nhập cao. Luôn trả lời "thu nhập thấp" cho mọi đầu vào, vẫn đạt accuracy 0.752 thì không có ý nghĩa gì. Vậy nên ta cần ưu tiên f1_score để cân bằng giữa recall và pression cho bài toán này.
+Vì tập dữ liệu bị mất cân bằng, chỉ **24,8%** mẫu thuộc lớp thu nhập cao (target = 1). Một mô hình luôn dự đoán “thu nhập thấp” vẫn đạt accuracy khoảng **0,752**, nhưng không phát hiện được bất kỳ trường hợp thu nhập cao nào, nên accuracy gây hiểu nhầm. F1-score của lớp dương kết hợp precision và recall, qua đó phản ánh tốt hơn khả năng nhận diện đúng nhóm thu nhập cao và hạn chế cả dự đoán dương sai lẫn bỏ sót. Vì vậy, lab dùng `f1_score(y_eval, preds)` với mặc định là lớp dương làm chỉ số chính. Không dùng `average="weighted"` hoặc `average="macro"` vì các cách tính này gộp kết quả của cả hai lớp; đặc biệt weighted F1 có thể bị lớp đa số kéo lên cao, khiến mô hình trông tốt dù vẫn bỏ sót nhiều mẫu thu nhập cao. Ngưỡng triển khai được đặt trên F1 để bảo đảm mô hình đạt chất lượng thực tế.
 
 <!-- Khoảng 120 - 150 từ. -->
 
@@ -77,9 +77,9 @@ Cần nêu được:
 
 | Khó khăn | Nguyên nhân | Cách giải quyết |
 | ---------- | ------------- | ------------------ |
-| ___        | ___           | ___                |
-| ___        | ___           | ___                |
-| ___        | ___           | ___                |
+| DVC không đẩy được dữ liệu lên S3 | Thiếu plugin `dvc-s3` và quyền S3 chưa đầy đủ | Cài `dvc[s3]`, cấu hình remote S3 và cấp quyền đọc/ghi object cho IAM user. |
+| GitHub Actions không SSH được vào EC2 | Security Group chỉ cho phép IP cá nhân truy cập port 22 | Mở tạm port 22 cho GitHub Actions, cập nhật đúng `SERVER_HOST` và cấu hình SSH key. |
+| API không tải được model trên EC2 | Phiên bản `scikit-learn` trên EC2 khác phiên bản dùng để huấn luyện model | Cài đúng `scikit-learn==1.4.2`, khởi động lại systemd service và kiểm tra `/healthz`. |
 
 ---
 
@@ -89,10 +89,10 @@ Cần nêu được:
 
 |                                  | f1_score | accuracy |
 | -------------------------------- | -------- | -------- |
-| Bước 2 (chỉ`train_batch1`)  | ___      | ___      |
-| Bước 3 (thêm`train_batch2`) | ___      | ___      |
+| Bước 2 (chỉ`train_batch1`)  | 0.7256   | 0.882    |
+| Bước 3 (thêm`train_batch2`) | 0.7442   | 0.890    |
 
-**Nhận xét:** ___
+**Nhận xét:** Khi bổ sung thêm 22.361 mẫu cùng phân phối, f1_score tăng từ 0.7256 lên 0.7442 và accuracy tăng từ 0.882 lên 0.890. Điều này cho thấy dữ liệu mới giúp mô hình nhận diện lớp thu nhập cao tốt hơn trong lần chạy này, đồng thời pipeline đã tự động huấn luyện và triển khai lại thành công.
 
 <!--
 Một câu trả lời trung thực kiểu "f1 giảm 0,01 vì dữ liệu mới cùng phân phối, không mang
